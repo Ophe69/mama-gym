@@ -1,18 +1,35 @@
-import { SelectedPage } from "@/shared/types"
-import { motion } from "framer-motion"
-import AnchorLink from "react-anchor-link-smooth-scroll"
+import { useState, useEffect } from "react";
+
+const useMediaQuery = (query: string) => {
+  const [matches, setMatches] = useState(false);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
+    }
+    const listener = () => setMatches(media.matches);
+    window.addEventListener("resize", listener);
+    return () => window.removeEventListener("resize", listener);
+  }, [matches, query]);
+
+  return matches;
+};
+import { SelectedPage } from "@/shared/types";
+import { motion } from "framer-motion";
+import AnchorLink from "react-anchor-link-smooth-scroll";
 
 const childVariant = {
   hidden: { opacity: 0, scale: 0.9 },
   visible: { opacity: 1, scale: 1 },
-}
+};
 
 type Props = {
-  icon: JSX.Element
-  title: string
-  description: string
-  setSelectedPage: (value: SelectedPage) => void
-}
+  icon: JSX.Element;
+  title: string;
+  description: string;
+  setSelectedPage: (value: SelectedPage) => void;
+};
 
 const Benefit = ({ icon, title, description, setSelectedPage }: Props) => {
   return (
@@ -36,7 +53,8 @@ const Benefit = ({ icon, title, description, setSelectedPage }: Props) => {
         <p>Learn More</p>
       </AnchorLink>
     </motion.div>
-  )
-}
+  );
+};
 
-export default Benefit
+
+export default useMediaQuery;
